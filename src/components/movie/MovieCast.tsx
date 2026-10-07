@@ -21,7 +21,7 @@ export function MovieCast({ movieId }: Props) {
       ) : (
         <FlatList
           horizontal
-          data={cast.slice(0, 15)}
+          data={cast}
           keyExtractor={(item) => String(item.id)}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 12 }}

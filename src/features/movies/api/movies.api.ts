@@ -33,5 +33,9 @@ export const getMovieCast = async (id: number): Promise<CastMember[]> => {
   const { data } = await movieApi.get<TMDBCreditsResponse>(`/${id}/credits`, {
     params: { language: "es-MX" },
   });
-  return data.cast.map(mapTMDBCastMember);
+  return data.cast
+    .slice()
+    .sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
+    .slice(0, 20)
+    .map(mapTMDBCastMember);
 };
