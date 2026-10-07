@@ -1,37 +1,27 @@
-import type { ReactNode } from "react";
-import { ScrollView, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import type { PropsWithChildren } from "react";
+import { ScrollView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { colors } from "@/constants/colors";
-
-type Props = {
-  children: ReactNode;
-  scroll?: boolean;
-};
+type Props = PropsWithChildren<{ scroll?: boolean }>;
 
 export function Screen({ children, scroll = false }: Props) {
+  const insets = useSafeAreaInsets();
+
+  if (scroll) {
+    return (
+      <ScrollView
+        className="flex-1 bg-zinc-950"
+        contentContainerStyle={{ paddingTop: insets.top, paddingBottom: 32 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {children}
+      </ScrollView>
+    );
+  }
+
   return (
-    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-      {scroll ? (
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
-          {children}
-        </ScrollView>
-      ) : (
-        children
-      )}
-    </SafeAreaView>
+    <View className="flex-1 bg-zinc-950" style={{ paddingTop: insets.top }}>
+      {children}
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  scrollContent: {
-    paddingBottom: 24,
-  },
-});

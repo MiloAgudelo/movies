@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { FlatList, StyleSheet, useWindowDimensions } from "react-native";
+import { FlatList, useWindowDimensions, View } from "react-native";
 
 import { MoviePoster } from "@/components/movies/MoviePoster";
 import type { Movie } from "@/features/movies/types";
@@ -20,27 +20,22 @@ export function MainSlideshow({ movies }: Props) {
   const sidePadding = Math.max((width - ITEM_WIDTH) / 2, 0);
 
   return (
-    <FlatList
-      horizontal
-      data={movies.slice(0, 8)}
-      keyExtractor={(item) => String(item.id)}
-      showsHorizontalScrollIndicator={false}
-      snapToInterval={ITEM_WIDTH}
-      decelerationRate="fast"
-      style={styles.list}
-      contentContainerStyle={{ paddingHorizontal: sidePadding }}
-      renderItem={({ item }) => (
-        <MoviePoster
-          movie={item}
-          onPress={() => router.push(`/movie/${item.id}`)}
-        />
-      )}
-    />
+    <View className="mb-5 w-full">
+      <FlatList
+        horizontal
+        data={movies.slice(0, 8)}
+        keyExtractor={(item) => String(item.id)}
+        showsHorizontalScrollIndicator={false}
+        snapToInterval={ITEM_WIDTH}
+        decelerationRate="fast"
+        contentContainerStyle={{ paddingHorizontal: sidePadding }}
+        renderItem={({ item }) => (
+          <MoviePoster
+            movie={item}
+            onPress={() => router.push(`/movie/${item.id}`)}
+          />
+        )}
+      />
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  list: {
-    marginBottom: 20,
-  },
-});

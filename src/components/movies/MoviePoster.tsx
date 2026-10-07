@@ -1,7 +1,6 @@
 import { Image } from "expo-image";
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, View } from "react-native";
 
-import { colors } from "@/constants/colors";
 import type { Movie } from "@/features/movies/types";
 
 type Props = {
@@ -19,27 +18,16 @@ export function MoviePoster({ movie, smallPoster = false, onPress }: Props) {
       accessibilityRole="button"
       accessibilityLabel={`Abrir ${movie.title}`}
       onPress={onPress}
-      style={({ pressed }) => [styles.container, pressed && styles.pressed]}
+      className="px-2 active:opacity-80"
     >
-      <Image
-        source={movie.poster}
-        contentFit="cover"
-        transition={250}
-        style={[styles.image, { width, height }]}
-      />
+      <View className="overflow-hidden rounded-2xl bg-zinc-800 shadow-lg">
+        <Image
+          source={movie.poster}
+          contentFit="cover"
+          transition={250}
+          style={{ width, height }}
+        />
+      </View>
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 8,
-  },
-  pressed: {
-    opacity: 0.8,
-  },
-  image: {
-    borderRadius: 16,
-    backgroundColor: colors.surface,
-  },
-});

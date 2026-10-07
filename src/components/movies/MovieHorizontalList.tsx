@@ -1,8 +1,7 @@
 import { useRouter } from "expo-router";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 
 import { MoviePoster } from "@/components/movies/MoviePoster";
-import { colors } from "@/constants/colors";
 import type { Movie } from "@/features/movies/types";
 
 type Props = {
@@ -16,14 +15,14 @@ export function MovieHorizontalList({ title, movies }: Props) {
   if (!movies.length) return null;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+    <View className="mb-6">
+      <Text className="mb-3 px-4 text-2xl font-bold text-white">{title}</Text>
       <FlatList
         horizontal
         data={movies}
         keyExtractor={(item) => String(item.id)}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.list}
+        contentContainerStyle={{ paddingHorizontal: 8 }}
         renderItem={({ item }) => (
           <MoviePoster
             movie={item}
@@ -35,19 +34,3 @@ export function MovieHorizontalList({ title, movies }: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 24,
-  },
-  title: {
-    marginBottom: 12,
-    paddingHorizontal: 16,
-    fontSize: 22,
-    fontWeight: "bold",
-    color: colors.text,
-  },
-  list: {
-    paddingHorizontal: 8,
-  },
-});

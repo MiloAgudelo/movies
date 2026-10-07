@@ -1,14 +1,7 @@
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SymbolView } from "expo-symbols";
-import {
-  ActivityIndicator,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Screen } from "@/components/ui/Screen";
@@ -24,7 +17,7 @@ export default function MovieDetailScreen() {
   if (isPending) {
     return (
       <Screen>
-        <View style={styles.center}>
+        <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color={colors.accent} />
         </View>
       </Screen>
@@ -34,10 +27,15 @@ export default function MovieDetailScreen() {
   if (isError || !movie) {
     return (
       <Screen>
-        <View style={styles.center}>
-          <Text style={styles.errorText}>No se pudo cargar la película</Text>
-          <Pressable onPress={() => router.back()} style={styles.button}>
-            <Text style={styles.buttonText}>Volver</Text>
+        <View className="flex-1 items-center justify-center px-8">
+          <Text className="text-center text-white">
+            No se pudo cargar la película
+          </Text>
+          <Pressable
+            onPress={() => router.back()}
+            className="mt-5 rounded-xl bg-purple-600 px-5 py-3"
+          >
+            <Text className="font-semibold text-white">Volver</Text>
           </Pressable>
         </View>
       </Screen>
@@ -53,122 +51,56 @@ export default function MovieDetailScreen() {
 
   return (
     <ScrollView
-      style={styles.container}
-      contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}
+      className="flex-1 bg-zinc-950"
+      contentContainerStyle={{ paddingBottom: insets.bottom + 32 }}
       showsVerticalScrollIndicator={false}
     >
-      <Image
-        source={movie.backdrop ?? movie.poster}
-        contentFit="cover"
-        transition={250}
-        style={styles.backdrop}
-      />
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Volver"
-        onPress={() => router.back()}
-        style={[styles.backButton, { top: insets.top + 8 }]}
-      >
-        <SymbolView
-          name={{ ios: "chevron.left", android: "arrow_back", web: "arrow_back" }}
-          tintColor={colors.text}
-          size={24}
-        />
-      </Pressable>
-
-      <View style={styles.content}>
+      <View className="relative bg-zinc-800">
         <Image
-          source={movie.poster}
+          source={movie.backdrop ?? movie.poster}
           contentFit="cover"
           transition={250}
-          style={styles.poster}
+          style={{ width: "100%", height: 250 }}
         />
-        <Text style={styles.title}>{movie.title}</Text>
-        <Text style={styles.rating}>★ {movie.rating.toFixed(1)}</Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Volver"
+          onPress={() => router.back()}
+          className="absolute left-4 rounded-full bg-black/60 p-2"
+          style={{ top: insets.top + 8 }}
+        >
+          <SymbolView
+            name={{ ios: "chevron.left", android: "arrow_back", web: "arrow_back" }}
+            tintColor="white"
+            size={24}
+          />
+        </Pressable>
+      </View>
+
+      <View className="-mt-16 px-5">
+        <View className="overflow-hidden rounded-2xl bg-zinc-800 self-start">
+          <Image
+            source={movie.poster}
+            contentFit="cover"
+            transition={250}
+            style={{ width: 120, height: 180 }}
+          />
+        </View>
+        <Text className="mt-4 text-3xl font-bold text-white">
+          {movie.title}
+        </Text>
+        <Text className="mt-2 text-purple-400">
+          ★ {movie.rating.toFixed(1)}
+        </Text>
         {details.length > 0 && (
-          <Text style={styles.details}>{details.join(" · ")}</Text>
+          <Text className="mt-1 text-zinc-400">{details.join(" · ")}</Text>
         )}
 
-        <Text style={styles.sectionTitle}>Sinopsis</Text>
-        <Text style={styles.description}>
+        <Text className="mt-5 text-lg font-semibold text-white">Sinopsis</Text>
+        <Text className="mt-2 leading-6 text-zinc-300">
           {movie.description || "Sin sinopsis disponible."}
         </Text>
       </View>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  center: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 32,
-  },
-  errorText: {
-    textAlign: "center",
-    color: colors.text,
-  },
-  button: {
-    marginTop: 20,
-    borderRadius: 12,
-    backgroundColor: colors.accentStrong,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-  },
-  buttonText: {
-    fontWeight: "600",
-    color: colors.text,
-  },
-  backdrop: {
-    width: "100%",
-    height: 250,
-    backgroundColor: colors.surface,
-  },
-  backButton: {
-    position: "absolute",
-    left: 16,
-    borderRadius: 999,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    padding: 8,
-  },
-  content: {
-    marginTop: -60,
-    paddingHorizontal: 20,
-  },
-  poster: {
-    width: 120,
-    height: 180,
-    borderRadius: 16,
-    backgroundColor: colors.surface,
-  },
-  title: {
-    marginTop: 16,
-    fontSize: 30,
-    fontWeight: "bold",
-    color: colors.text,
-  },
-  rating: {
-    marginTop: 8,
-    color: colors.accent,
-  },
-  details: {
-    marginTop: 4,
-    color: colors.textMuted,
-  },
-  sectionTitle: {
-    marginTop: 20,
-    fontSize: 18,
-    fontWeight: "600",
-    color: colors.text,
-  },
-  description: {
-    marginTop: 8,
-    lineHeight: 24,
-    color: colors.textMuted,
-  },
-});
