@@ -34,3 +34,22 @@ export type TmdbPage<T> = {
   total_pages: number;
   total_results: number;
 };
+
+export type Cast = {
+  id: number;
+  name: string;
+  character: string;
+  avatar: string | null;
+};
+
+export type TmdbCast = {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+};
+
+export type TmdbCredits = {
+  id: number;
+  cast: TmdbCast[];
+};

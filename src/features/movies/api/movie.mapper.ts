@@ -1,4 +1,11 @@
-import type { Movie, MovieDetail, TmdbMovie, TmdbMovieDetail } from "../types";
+import type {
+  Cast,
+  Movie,
+  MovieDetail,
+  TmdbCast,
+  TmdbMovie,
+  TmdbMovieDetail,
+} from "../types";
 
 const IMAGE_URL = "https://image.tmdb.org/t/p";
 
@@ -23,5 +30,14 @@ export function toMovieDetail(movie: TmdbMovieDetail): MovieDetail {
     ...toMovie(movie),
     genres: movie.genres.map((genre) => genre.name),
     runtime: movie.runtime,
+  };
+}
+
+export function toCast(actor: TmdbCast): Cast {
+  return {
+    id: actor.id,
+    name: actor.name,
+    character: actor.character,
+    avatar: toImageUrl(actor.profile_path, "w185"),
   };
 }

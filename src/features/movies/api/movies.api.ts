@@ -1,5 +1,10 @@
-import type { TmdbMovie, TmdbMovieDetail, TmdbPage } from "../types";
-import { toMovie, toMovieDetail } from "./movie.mapper";
+import type {
+  TmdbCredits,
+  TmdbMovie,
+  TmdbMovieDetail,
+  TmdbPage,
+} from "../types";
+import { toCast, toMovie, toMovieDetail } from "./movie.mapper";
 
 const BASE_URL = process.env.EXPO_PUBLIC_MOVIE_DB_URL;
 const TOKEN = process.env.EXPO_PUBLIC_MOVIE_DB_TOKEN;
@@ -36,4 +41,9 @@ export async function getMoviesByCategory(category: MovieCategory) {
 export async function getMovieById(id: number) {
   const movie = await tmdbFetch<TmdbMovieDetail>(`/movie/${id}`);
   return toMovieDetail(movie);
+}
+
+export async function getMovieCast(id: number) {
+  const data = await tmdbFetch<TmdbCredits>(`/movie/${id}/credits`);
+  return data.cast.map(toCast);
 }

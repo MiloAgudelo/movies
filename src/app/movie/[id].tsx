@@ -4,6 +4,7 @@ import { SymbolView } from "expo-symbols";
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { MovieCast } from "@/components/movie/MovieCast";
 import { Screen } from "@/components/ui/Screen";
 import { colors } from "@/constants/colors";
 import { useMovie } from "@/features/movies/hooks/useMovie";
@@ -101,6 +102,8 @@ export default function MovieDetailScreen() {
           {movie.description || "Sin sinopsis disponible."}
         </Text>
       </View>
+
+      <MovieCast movieId={movie.id} />
     </ScrollView>
   );
 }
