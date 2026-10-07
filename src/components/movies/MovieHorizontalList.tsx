@@ -2,7 +2,7 @@ import { useRouter } from "expo-router";
 import { FlatList, Text, View } from "react-native";
 
 import { MoviePoster } from "@/components/movies/MoviePoster";
-import type { Movie } from "@/features/movies/types";
+import type { Movie } from "@/types/movie";
 
 type Props = {
   title: string;

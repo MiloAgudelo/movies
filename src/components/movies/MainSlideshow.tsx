@@ -2,7 +2,7 @@ import { useRouter } from "expo-router";
 import { FlatList, useWindowDimensions, View } from "react-native";
 
 import { MoviePoster } from "@/components/movies/MoviePoster";
-import type { Movie } from "@/features/movies/types";
+import type { Movie } from "@/types/movie";
 
 // Ancho del póster grande (170) más el padding horizontal de MoviePoster (8 + 8).
 const ITEM_WIDTH = 186;

@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
 import { Pressable, View } from "react-native";
 
-import type { Movie } from "@/features/movies/types";
+import type { Movie } from "@/types/movie";
 
 type Props = {
   movie: Pick<Movie, "id" | "poster" | "title">;

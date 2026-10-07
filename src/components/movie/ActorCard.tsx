@@ -1,10 +1,10 @@
 import { Image } from "expo-image";
 import { Text, View } from "react-native";
 
-import type { Cast } from "@/features/movies/types";
+import type { CastMember } from "@/types/movie";
 
 type Props = {
-  actor: Cast;
+  actor: CastMember;
 };
 
 export function ActorCard({ actor }: Props) {
