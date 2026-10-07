@@ -1,14 +1,8 @@
-import type {
-  Movie,
-  MovieDetail,
-  TmdbMovie,
-  TmdbMovieDetail,
-  TmdbPage,
-} from "./types";
+import type { TmdbMovie, TmdbMovieDetail, TmdbPage } from "../types";
+import { toMovie, toMovieDetail } from "./movie.mapper";
 
 const BASE_URL = process.env.EXPO_PUBLIC_MOVIE_DB_URL;
 const TOKEN = process.env.EXPO_PUBLIC_MOVIE_DB_TOKEN;
-const IMAGE_URL = "https://image.tmdb.org/t/p";
 
 export type MovieCategory = "now_playing" | "popular" | "top_rated" | "upcoming";
 
@@ -34,32 +28,12 @@ async function tmdbFetch<T>(path: string): Promise<T> {
   return response.json();
 }
 
-function imageUrl(path: string | null, size: "w500" | "original") {
-  return path ? `${IMAGE_URL}/${size}${path}` : null;
-}
-
-function toMovie(movie: TmdbMovie): Movie {
-  return {
-    id: movie.id,
-    title: movie.title,
-    description: movie.overview,
-    releaseDate: movie.release_date,
-    rating: movie.vote_average,
-    poster: imageUrl(movie.poster_path, "w500"),
-    backdrop: imageUrl(movie.backdrop_path, "original"),
-  };
-}
-
 export async function getMoviesByCategory(category: MovieCategory) {
   const data = await tmdbFetch<TmdbPage<TmdbMovie>>(`/movie/${category}`);
   return data.results.map(toMovie);
 }
 
-export async function getMovieById(id: number): Promise<MovieDetail> {
+export async function getMovieById(id: number) {
   const movie = await tmdbFetch<TmdbMovieDetail>(`/movie/${id}`);
-  return {
-    ...toMovie(movie),
-    genres: movie.genres.map((genre) => genre.name),
-    runtime: movie.runtime,
-  };
+  return toMovieDetail(movie);
 }

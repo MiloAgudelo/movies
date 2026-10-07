@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getMoviesByCategory, type MovieCategory } from "../api";
+import { getMoviesByCategory, type MovieCategory } from "../api/movies.api";
 
 const STALE_TIME = 1000 * 60 * 60;
 
