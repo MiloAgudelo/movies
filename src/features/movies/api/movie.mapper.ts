@@ -7,28 +7,38 @@ import type {
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 
-const imageUrl = (path: string | null, size: "w185" | "w500" | "original") =>
-  path ? `${IMAGE_BASE_URL}/${size}${path}` : null;
+const imageUrl = (path: string | null, size: "w500" | "w780" = "w500") =>
+  path ? `${IMAGE_BASE_URL}/${size}${path}` : "";
 
+// TMDB devuelve "" cuando no hay traducción de la sinopsis, por eso `||` y no `??`.
 export const mapTMDBMovie = (movie: TMDBMovie): Movie => ({
   id: movie.id,
   title: movie.title,
-  description: movie.overview,
-  releaseDate: movie.release_date,
+  description: movie.overview || "Sin descripción disponible.",
+  releaseDate: movie.release_date ? new Date(movie.release_date) : null,
+  poster: imageUrl(movie.poster_path),
+  backdrop: imageUrl(movie.backdrop_path, "w780"),
   rating: movie.vote_average,
-  poster: imageUrl(movie.poster_path, "w500"),
-  backdrop: imageUrl(movie.backdrop_path, "original"),
 });
 
 export const mapTMDBMovieDetail = (movie: TMDBMovieDetail): CompleteMovie => ({
-  ...mapTMDBMovie(movie),
+  id: movie.id,
+  title: movie.title,
+  originalTitle: movie.original_title,
+  description: movie.overview || "Sin descripción disponible.",
+  releaseDate: movie.release_date ? new Date(movie.release_date) : null,
+  poster: imageUrl(movie.poster_path),
+  backdrop: imageUrl(movie.backdrop_path, "w780"),
+  rating: movie.vote_average,
+  budget: movie.budget ?? 0,
+  duration: movie.runtime ?? 0,
   genres: movie.genres.map((genre) => genre.name),
-  runtime: movie.runtime,
+  productionCompanies: movie.production_companies.map((company) => company.name),
 });
 
 export const mapTMDBCastMember = (actor: TMDBCastMember): CastMember => ({
   id: actor.id,
   name: actor.name,
-  character: actor.character,
-  avatar: imageUrl(actor.profile_path, "w185"),
+  character: actor.character || "Personaje no disponible",
+  avatar: imageUrl(actor.profile_path),
 });

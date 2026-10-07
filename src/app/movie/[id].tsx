@@ -8,6 +8,7 @@ import { MovieCast } from "@/components/movie/MovieCast";
 import { Screen } from "@/components/ui/Screen";
 import { colors } from "@/constants/colors";
 import { useMovie } from "@/features/movies/hooks/useMovie";
+import { formatCurrency, formatDuration } from "@/utils/formatter";
 
 export default function MovieDetailScreen() {
   const router = useRouter();
@@ -43,10 +44,11 @@ export default function MovieDetailScreen() {
     );
   }
 
-  const year = movie.releaseDate?.slice(0, 4);
+  // new Date("AAAA-MM-DD") queda en UTC; getFullYear() en Colombia daría el año anterior el 1 de enero.
+  const year = movie.releaseDate?.getUTCFullYear();
   const details = [
     year,
-    movie.runtime ? `${movie.runtime} min` : null,
+    movie.duration ? formatDuration(movie.duration) : null,
     movie.genres.join(", "),
   ].filter(Boolean);
 
@@ -58,7 +60,7 @@ export default function MovieDetailScreen() {
     >
       <View className="relative bg-zinc-800">
         <Image
-          source={movie.backdrop ?? movie.poster}
+          source={movie.backdrop || movie.poster}
           contentFit="cover"
           transition={250}
           style={{ width: "100%", height: 250 }}
@@ -90,6 +92,9 @@ export default function MovieDetailScreen() {
         <Text className="mt-4 text-3xl font-bold text-white">
           {movie.title}
         </Text>
+        {movie.originalTitle !== movie.title && (
+          <Text className="mt-1 text-zinc-400">{movie.originalTitle}</Text>
+        )}
         <Text className="mt-2 text-purple-400">
           ★ {movie.rating.toFixed(1)}
         </Text>
@@ -99,8 +104,30 @@ export default function MovieDetailScreen() {
 
         <Text className="mt-5 text-lg font-semibold text-white">Sinopsis</Text>
         <Text className="mt-2 leading-6 text-zinc-300">
-          {movie.description || "Sin sinopsis disponible."}
+          {movie.description}
         </Text>
+
+        {movie.budget > 0 && (
+          <>
+            <Text className="mt-5 text-lg font-semibold text-white">
+              Presupuesto
+            </Text>
+            <Text className="mt-2 text-zinc-300">
+              {formatCurrency(movie.budget)}
+            </Text>
+          </>
+        )}
+
+        {movie.productionCompanies.length > 0 && (
+          <>
+            <Text className="mt-5 text-lg font-semibold text-white">
+              Productoras
+            </Text>
+            <Text className="mt-2 leading-6 text-zinc-300">
+              {movie.productionCompanies.join(", ")}
+            </Text>
+          </>
+        )}
       </View>
 
       <MovieCast movieId={movie.id} />

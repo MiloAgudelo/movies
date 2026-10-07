@@ -1,7 +1,8 @@
 export interface TMDBMovie {
   id: number;
   title: string;
-  overview: string;
+  original_title: string;
+  overview: string | null;
   release_date: string;
   vote_average: number;
   poster_path: string | null;
@@ -9,8 +10,15 @@ export interface TMDBMovie {
 }
 
 export interface TMDBMovieDetail extends TMDBMovie {
-  genres: { id: number; name: string }[];
+  budget: number | null;
   runtime: number | null;
+  genres: { id: number; name: string }[];
+  production_companies: {
+    id: number;
+    name: string;
+    logo_path: string | null;
+    origin_country: string;
+  }[];
 }
 
 export interface TMDBCastMember {
