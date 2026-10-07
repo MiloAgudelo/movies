@@ -1,11 +1,10 @@
-import type {
-  TMDBCredits,
-  TMDBMovie,
-  TMDBMovieDetail,
-  TMDBPage,
-} from "@/features/movies/types/tmdb";
 import { movieApi } from "@/services/api/movie-api";
-
+import type { CastMember, CompleteMovie, Movie } from "@/types/movie";
+import type {
+  TMDBCreditsResponse,
+  TMDBMovieDetail,
+  TMDBMoviesResponse,
+} from "@/features/movies/types/tmdb";
 import {
   mapTMDBCastMember,
   mapTMDBMovie,
@@ -14,17 +13,25 @@ import {
 
 export type MovieCategory = "now_playing" | "popular" | "top_rated" | "upcoming";
 
-export async function getMoviesByCategory(category: MovieCategory) {
-  const data = await movieApi<TMDBPage<TMDBMovie>>(`/movie/${category}`);
+export const getMoviesByCategory = async (
+  category: MovieCategory,
+): Promise<Movie[]> => {
+  const { data } = await movieApi.get<TMDBMoviesResponse>(`/${category}`, {
+    params: { language: "es-MX" },
+  });
   return data.results.map(mapTMDBMovie);
-}
+};
 
-export async function getMovieById(id: number) {
-  const movie = await movieApi<TMDBMovieDetail>(`/movie/${id}`);
-  return mapTMDBMovieDetail(movie);
-}
+export const getMovieById = async (id: number): Promise<CompleteMovie> => {
+  const { data } = await movieApi.get<TMDBMovieDetail>(`/${id}`, {
+    params: { language: "es-MX" },
+  });
+  return mapTMDBMovieDetail(data);
+};
 
-export async function getMovieCast(id: number) {
-  const data = await movieApi<TMDBCredits>(`/movie/${id}/credits`);
+export const getMovieCast = async (id: number): Promise<CastMember[]> => {
+  const { data } = await movieApi.get<TMDBCreditsResponse>(`/${id}/credits`, {
+    params: { language: "es-MX" },
+  });
   return data.cast.map(mapTMDBCastMember);
-}
+};

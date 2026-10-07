@@ -26,16 +26,17 @@ export interface TMDBCastMember {
   name: string;
   character: string;
   profile_path: string | null;
+  order: number;
 }
 
-export interface TMDBCredits {
+export interface TMDBCreditsResponse {
   id: number;
   cast: TMDBCastMember[];
 }
 
-export interface TMDBPage<T> {
+export interface TMDBMoviesResponse {
   page: number;
-  results: T[];
+  results: TMDBMovie[];
   total_pages: number;
   total_results: number;
 }
