@@ -14,7 +14,8 @@ export default function MovieDetailScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { data: movie, isPending, isError } = useMovie(Number(id));
+  const { movieQuery, castQuery } = useMovie(Number(id));
+  const { data: movie, isPending, isError } = movieQuery;
 
   if (isPending) {
     return (
@@ -130,7 +131,9 @@ export default function MovieDetailScreen() {
         )}
       </View>
 
-      <MovieCast movieId={movie.id} />
+      {!castQuery.isError && (
+        <MovieCast cast={castQuery.data ?? []} isLoading={castQuery.isPending} />
+      )}
     </ScrollView>
   );
 }

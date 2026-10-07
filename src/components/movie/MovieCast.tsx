@@ -2,21 +2,18 @@ import { ActivityIndicator, FlatList, Text, View } from "react-native";
 
 import { ActorCard } from "@/components/movie/ActorCard";
 import { colors } from "@/constants/colors";
-import { useMovieCast } from "@/features/movies/hooks/useMovieCast";
+import type { CastMember } from "@/types/movie";
 
 type Props = {
-  movieId: number;
+  cast: CastMember[];
+  isLoading?: boolean;
 };
 
-export function MovieCast({ movieId }: Props) {
-  const { data: cast, isPending, isError } = useMovieCast(movieId);
-
-  if (isError) return null;
-
+export function MovieCast({ cast, isLoading = false }: Props) {
   return (
     <View className="mt-6">
       <Text className="mb-3 px-5 text-lg font-semibold text-white">Reparto</Text>
-      {isPending ? (
+      {isLoading ? (
         <ActivityIndicator color={colors.accent} />
       ) : (
         <FlatList
