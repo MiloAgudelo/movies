@@ -4,7 +4,7 @@ import { SymbolView } from "expo-symbols";
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { MovieCast } from "@/components/movie/MovieCast";
+import { MovieCast } from "@/components/movie-old/MovieCast";
 import { Screen } from "@/components/ui/Screen";
 import { colors } from "@/constants/colors";
 import { useMovie } from "@/features/movies/hooks/useMovie";

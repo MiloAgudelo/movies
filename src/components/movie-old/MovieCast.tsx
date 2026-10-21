@@ -1,6 +1,6 @@
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
 
-import { ActorCard } from "@/components/movie/ActorCard";
+import { ActorCard } from "@/components/movie-old/ActorCard";
 import { colors } from "@/constants/colors";
 import type { CastMember } from "@/types/movie";
 
